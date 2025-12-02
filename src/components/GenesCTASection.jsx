@@ -1,45 +1,23 @@
 import { MagnifyingGlassIcon, ShareIcon, PlayIcon, ArrowsRightLeftIcon } from '@heroicons/react/20/solid'
 import { Button } from '@/components/base/Button'
 import { HoverPopover } from '@/components/base/HoverPopover'
+import geneFeaturesData from '@/data/geneFeatures.json'
 
 const tagLine = 'Just paste your genes';
 const title = 'Start with a gene list (1+)';
 const description = `With either your gene list or your genomics data, you're just a few clicks away from finding relevant information and analyses for your research.`;
 
-const features = [
-  {
-    name: 'Find gene function',
-    description: 'Find out more information about gene function for one or more genes.',
-    icon: MagnifyingGlassIcon,
-    tool: 'GeneMANIA',
-    toolLink: 'https://genemania.org',
-    tutorialLink: 'https://wikipedia.org'
-  },
-  { 
-    name: 'Run pathway enrichment analysis', 
-    description: 'Run pathway enrichment analysis on genomics data or a gene list.',
-    icon: PlayIcon,
-    tool: 'EnrichmentMap',
-    toolLink: 'https://enrichmentmap.org',
-    tutorialLink: 'https://www.pathwaycommons.org/guide/workflows/rna_seq_to_enrichment_map/'
-  },
-  {
-    name: 'Get a network',
-    description: 'Search for published networks from researchers all over the world.',
-    icon: ShareIcon,
-    tool: 'NDEx',
-    toolLink: 'https://ndexbio.org',
-    tutorialLink: 'https://wikipedia.org'
-  },
-  {
-    name: 'Predict gene regulatory networks',
-    description: 'Predict gene regulatory networks controlling co-regulated genes.',
-    icon: ArrowsRightLeftIcon,
-    tool: 'iRegulon',
-    toolLink: 'https://iregulon.org',
-    tutorialLink: 'https://wikipedia.org'
-  }
-]
+const iconMap = {
+  MagnifyingGlassIcon,
+  ShareIcon,
+  PlayIcon,
+  ArrowsRightLeftIcon
+}
+
+const features = geneFeaturesData.map(feature => ({
+  ...feature,
+  icon: iconMap[feature.icon]
+}))
 
 export function GenesCTASection() {
   return (

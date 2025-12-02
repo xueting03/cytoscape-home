@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Web",
+    "subtitle": "Cytoscape Web in your browser, easy and shareable",
+    "id": "tier-web",
+    "href": "https://web.cytoscape.org/",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "features": [
+      "Get started in seconds, no installation required",
+      "Sharing and collaboration with colleagues",
+      "Beginner-friendly",
+      "All computers and tablets supported",
+      "Publication-ready figure export"
+    ],
+    "cta": "Open now"
+  },
+  {
+    "name": "Desktop",
+    "subtitle": "Cytoscape Desktop on your computer, private and powerful",
+    "id": "tier-desktop",
+    "href": "https://cytoscape.org/download.html",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "features": [
+      "Install on your computer",
+      "Private and offline",
+      "Automate your workflow with Python",
+      "Mac, Windows, and Linux supported",
+      "Publication-ready figure export"
+    ],
+    "cta": "Download now"
+  }
+]

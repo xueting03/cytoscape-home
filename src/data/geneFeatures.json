@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Find gene function",
+    "description": "Find out more information about gene function for one or more genes.",
+    "icon": "MagnifyingGlassIcon",
+    "tool": "GeneMANIA",
+    "toolLink": "https://genemania.org",
+    "tutorialLink": "https://wikipedia.org"
+  },
+  { 
+    "name": "Run pathway enrichment analysis", 
+    "description": "Run pathway enrichment analysis on genomics data or a gene list.",
+    "icon": "PlayIcon",
+    "tool": "EnrichmentMap",
+    "toolLink": "https://enrichmentmap.org",
+    "tutorialLink": "https://www.pathwaycommons.org/guide/workflows/rna_seq_to_enrichment_map/"
+  },
+  {
+    "name": "Get a network",
+    "description": "Search for published networks from researchers all over the world.",
+    "icon": "ShareIcon",
+    "tool": "NDEx",
+    "toolLink": "https://ndexbio.org",
+    "tutorialLink": "https://wikipedia.org"
+  },
+  {
+    "name": "Predict gene regulatory networks",
+    "description": "Predict gene regulatory networks controlling co-regulated genes.",
+    "icon": "ArrowsRightLeftIcon",
+    "tool": "iRegulon",
+    "toolLink": "https://iregulon.org",
+    "tutorialLink": "https://wikipedia.org"
+  }
+]
