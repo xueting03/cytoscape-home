@@ -7,7 +7,7 @@ import { Container } from '@/components/base/Container'
 import { AppLogo, CytoscapeLogo } from '@/components/Logos'
 import { NavLinks } from '@/components/NavLinks'
 import { UseCytoscapeDialog } from '@/components/UseCytoscapeDialog'
-import { useState } from 'react'
+import { useState , useEffect } from 'react'
 
 
 function MenuIcon(props) {
@@ -69,12 +69,37 @@ function CytoscapeLink(props) {
 
 export function Header() {
   const [openUseCy, setOpenUseCy] = useState(false);
+  const [hidden, setHidden] = useState(false)
+
+  useEffect(() => {
+    let lastY = window.scrollY
+
+    function onScroll() {
+      const currentY = window.scrollY
+
+      if (Math.abs(currentY - lastY) < 5) return
+
+      if (currentY > lastY) {
+        setHidden(true) 
+      } else {
+        setHidden(false) 
+      }
+
+      lastY = currentY
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
 
   return (
     <>
-    <header>
+      <header
+        className={clsx("sticky top-0 z-50 bg-white backdrop-blur-md transition-transform duration-300",hidden ? "-translate-y-full" : "translate-y-0")}
+      >
       <nav>
-        <Container className="relative z-10 flex justify-between py-8">
+        <Container className="relative z-10 flex justify-between py-4">
           <div className="relative z-10 flex items-center gap-16">
             <a href="/" aria-label="Home">
               <AppLogo className="h-10 w-auto" />
