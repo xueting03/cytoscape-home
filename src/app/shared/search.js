@@ -1,5 +1,6 @@
 import EventEmitter from 'eventemitter3'
 import MiniSearch from 'minisearch'
+import { Network } from '@/lib/api/network'
 
 
 /* Common stop words to ignore in search */
@@ -53,41 +54,42 @@ export class SearchEngine {
   async _indexTutorials() {
     console.log('Indexing tutorials...')
 
-    const tutorials = await fetch('/tutorials/protocols/enrichmentmap-pipeline.json')
-      .then(response => response.json())
-      .then(data => {
-        console.log('Loaded tutorials:', data.length)
-        // Convert the data to the format expected by MiniSearch
-        return data.map((item, index) => ({
-          id: index,
-          section: item.id,
-          parent: item.parentId || null,
-          title: item.title || '',
-          text: item.text || '',
-        }))
+    try {
+      const response = await Network.internal.get('/tutorials/protocols/enrichmentmap-pipeline.json')
+      const data = response.data
+      
+      console.log('Loaded tutorials:', data.length)
+      
+      // Convert the data to the format expected by MiniSearch
+      const tutorials = data.map((item, index) => ({
+        id: index,
+        section: item.id,
+        parent: item.parentId || null,
+        title: item.title || '',
+        text: item.text || '',
+      }))
+      
+      if (!tutorials || tutorials.length === 0) {
+        return
+      }
+
+      this.tutorialsSearch = new MiniSearch({
+        fields: ['title', 'text'],
+        storeFields: ['section', 'parent', 'title', 'text'],
+        searchOptions: {
+          boost: { title: 2, text: 1 },
+          fuzzy: 0.0,
+          prefix: true,
+          processTerm: (term) => stopWords.has(term.toLowerCase()) ? null : term.toLowerCase()
+        },
       })
-      .catch(error => {
-        console.error('Error loading tutorials:', error)
-        return []
-      })
-    
-    if (!tutorials || tutorials.length === 0) {
+
+      this.tutorialsSearch.addAll(tutorials)
+      this.bus.emit('tutorialsIndexed')
+    } catch (error) {
+      console.error('Error loading tutorials:', error)
       return
     }
-
-    this.tutorialsSearch = new MiniSearch({
-      fields: ['title', 'text'],
-      storeFields: ['section', 'parent', 'title', 'text'],
-      searchOptions: {
-        boost: { title: 2, text: 1 },
-        fuzzy: 0.0,
-        prefix: true,
-        processTerm: (term) => stopWords.has(term.toLowerCase()) ? null : term.toLowerCase()
-      },
-    })
-
-    this.tutorialsSearch.addAll(tutorials)
-    this.bus.emit('tutorialsIndexed')
   }
 
   async _indexPathways() {
@@ -107,41 +109,42 @@ export class SearchEngine {
         "last-edited": "2025-08-10"
         }
     */
-    const pathways = await fetch('https://www.wikipathways.org/search.json')
-      .then(response => response.json())
-      .then(data => {
-        console.log('Loaded pathways:', data)
-        // Convert the data to the format expected by MiniSearch
-        return data.map((item) => ({
-          id: item.wpid,
-          title: item.title || '',
-          description: item.description || '',
-          organisms: item.organisms ? item.organisms.split(',').map(o => o.trim()) : [],
-          keywords: item.keywords ? item.keywords.split(',').map(k => k.trim()) : [],
-          annotations: item.annotations ? item.annotations.split(',').map(a => a.trim()) : [],
-          url: item.url || '',
-        }))
-      })
-      .catch(error => {
-        console.error('Error loading pathways:', error)
-        return []
+    try {
+      const response = await Network.external.get('https://www.wikipathways.org/search.json')
+      const data = response.data
+      
+      console.log('Loaded pathways:', data)
+      
+      // Convert the data to the format expected by MiniSearch
+      const pathways = data.map((item) => ({
+        id: item.wpid,
+        title: item.title || '',
+        description: item.description || '',
+        organisms: item.organisms ? item.organisms.split(',').map(o => o.trim()) : [],
+        keywords: item.keywords ? item.keywords.split(',').map(k => k.trim()) : [],
+        annotations: item.annotations ? item.annotations.split(',').map(a => a.trim()) : [],
+        url: item.url || '',
+      }))
+
+      if (!pathways || pathways.length === 0) {
+        return
+      }
+
+      this.pathwaysSearch = new MiniSearch({
+        fields: ['title', 'description', 'keywords', 'annotations'],
+        storeFields: ['id', 'url', 'title', 'organisms', 'description', 'keywords', 'annotations'],
+        searchOptions: {
+          boost: { title: 2, keywords: 2, annotations: 2 },
+          fuzzy: 0.0,
+          prefix: true,
+          processTerm: (term) => stopWords.has(term.toLowerCase()) ? null : term.toLowerCase()
+        },
       })
 
-    if (!pathways || pathways.length === 0) {
+      this.pathwaysSearch.addAll(pathways)
+    } catch (error) {
+      console.error('Error loading pathways:', error)
       return
     }
-
-    this.pathwaysSearch = new MiniSearch({
-      fields: ['title', 'description', 'keywords', 'annotations'],
-      storeFields: ['id', 'url', 'title', 'organisms', 'description', 'keywords', 'annotations'],
-      searchOptions: {
-        boost: { title: 2, keywords: 2, annotations: 2 },
-        fuzzy: 0.0,
-        prefix: true,
-        processTerm: (term) => stopWords.has(term.toLowerCase()) ? null : term.toLowerCase()
-      },
-    })
-
-    this.pathwaysSearch.addAll(pathways)
   }
 }
