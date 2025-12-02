@@ -132,7 +132,8 @@ export function SearchBar({
         {dropdownOpen && (
           <div
             id="organismDropdownMenu"
-            className="z-10 min-w-[280px] absolute top-10 -left-1 w-full bg-white border border-slate-200 rounded-md shadow-lg"
+            className="z-10 min-w-[280px] absolute top-10 -left-1 w-full bg-white border border-slate-200 rounded-md shadow-lg scrollbar-hide"
+            style={{ maxHeight: '130px', overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             <ul id="searchDropdownOptions">
             {geneManiaOrganisms.map((org) => (
