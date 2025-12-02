@@ -1,14 +1,11 @@
 import EventEmitter from 'eventemitter3'
 import MiniSearch from 'minisearch'
 import { Network } from '@/lib/api/network'
+import stopWordsData from '@/data/stopWords.json'
 
 
 /* Common stop words to ignore in search */
-const stopWords = new Set([
-  'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from',
-  'has', 'have', 'if', 'in', 'is', 'it', 'of', 'on', 'or', 'that',
-  'the', 'this', 'to', 'with'
-])
+const stopWords = new Set(stopWordsData)
 
 
 export class SearchEngine {
