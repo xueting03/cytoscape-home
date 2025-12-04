@@ -1,16 +1,10 @@
-import clsx from 'clsx'
+import clsx from 'clsx';
 
 function WindowButton({ className }) {
-  return (
-    <div className={clsx('size-3.5 rounded-full mr-1.5 opacity-50', className)} />
-  )
+  return <div className={clsx('size-3.5 rounded-full mr-1.5 opacity-50', className)} />;
 }
 
-export function BrowserFrame({
-  className,
-  children,
-  ...props
-}) {
+export function BrowserFrame({ className, children, ...props }) {
   return (
     <div className={clsx('relative aspect-[626/729]', className)} {...props}>
       <div className="absolute inset-y-[calc(1/729*100%)] left-[calc(7/729*100%)] right-[calc(5/729*100%)] border border-gray-300 rounded-2xl bg-gray-200 shadow-xl">
@@ -25,5 +19,5 @@ export function BrowserFrame({
         </div>
       </div>
     </div>
-  )
+  );
 }
