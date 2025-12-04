@@ -1,28 +1,26 @@
-import { useState, useEffect, useMemo } from 'react'
-import { parseGeneList } from '@/app/shared/common'
-
+import { useState, useEffect, useMemo } from 'react';
+import { parseGeneList } from '@/app/shared/common';
 
 const stepsDef = [
   {
-    title: "Search Tutorials and Protocols",
+    title: 'Search Tutorials and Protocols',
     component: SearchPanel,
   },
-]
-
+];
 
 function SearchPanel({ initialValue, onChange }) {
-  const [value, setValue] = useState()
+  const [value, setValue] = useState();
 
   useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
+    setValue(initialValue);
+  }, [initialValue]);
 
-  const handleChange = (event) => {
-    let val = event.target.value
-    setValue(val)
-    val = val.trim()
-    onChange(val)
-  }
+  const handleChange = event => {
+    let val = event.target.value;
+    setValue(val);
+    val = val.trim();
+    onChange(val);
+  };
 
   return (
     <div>
@@ -40,42 +38,46 @@ function SearchPanel({ initialValue, onChange }) {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export function TutorialWizard({ step, initialSearchText, setTotalSteps, setTitle, onCanContinue, onSubmit }) {
-  const [searchText, setSearchText] = useState(initialSearchText || '')
+export function TutorialWizard({
+  step,
+  initialSearchText,
+  setTotalSteps,
+  setTitle,
+  onCanContinue,
+  onSubmit,
+}) {
+  const [searchText, setSearchText] = useState(initialSearchText || '');
 
-  const terms = useMemo(
-    () => searchText ? parseGeneList(searchText) : [],
-    [searchText]
-  )
-  
+  const terms = useMemo(() => (searchText ? parseGeneList(searchText) : []), [searchText]);
+
   useEffect(() => {
-    setSearchText(initialSearchText || '')
-  }, [initialSearchText])
+    setSearchText(initialSearchText || '');
+  }, [initialSearchText]);
 
   useEffect(() => {
     if (step >= 0 && step < stepsDef.length) {
-      setTotalSteps(stepsDef.length)
-      setTitle(stepsDef[step].title)
+      setTotalSteps(stepsDef.length);
+      setTitle(stepsDef[step].title);
     }
     switch (step) {
       case 0:
-        onCanContinue(terms.length > 0)
-        break
+        onCanContinue(terms.length > 0);
+        break;
       case 1:
-        onSubmit({ type: 'tutorial', terms })
+        onSubmit({ type: 'tutorial', terms });
     }
-  }, [step, setTotalSteps, setTitle, onCanContinue, onSubmit, terms])
+  }, [step, setTotalSteps, setTitle, onCanContinue, onSubmit, terms]);
 
-  const handleChange = (value) => {
-    setSearchText(value)
-  }
+  const handleChange = value => {
+    setSearchText(value);
+  };
 
   return (
     <div className="min-h-48">
       <SearchPanel initialValue={searchText} onChange={handleChange} />
     </div>
-  )
+  );
 }

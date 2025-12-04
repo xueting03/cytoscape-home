@@ -1,12 +1,12 @@
-import clsx from 'clsx'
-import { colors } from '@/styles/tailwind'
-import { CytoscapeLogo } from '@/components/Logos'
+import clsx from 'clsx';
+import { colors } from '@/styles/tailwind';
+import { CytoscapeLogo } from '@/components/Logos';
 
 export function LoadingMessage({ message, className }) {
   className = clsx(
     'flex flex-col space-y-4 items-center justify-center text-center text-gray-400 animate-pulse from-opacity-0 to-opacity-100',
-    className,
-  )
+    className
+  );
 
   return (
     // Add a spinning icon or similar visual indicator if desired
@@ -14,9 +14,7 @@ export function LoadingMessage({ message, className }) {
       <div className="animate-spin">
         <CytoscapeLogo className="h-10" fill={colors.gray[400]} />
       </div>
-      <div>
-        {message || 'Loading...'}
-      </div>
+      <div>{message || 'Loading...'}</div>
     </div>
-  )
+  );
 }

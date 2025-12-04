@@ -1,22 +1,22 @@
-import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
-import { Button } from '@/components/base/Button'
-import { XMarkIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
+import { Button } from '@/components/base/Button';
+import { XMarkIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 export function WizardDialog({
-  open=false,
-  totalSteps=0,
-  step=-1,
+  open = false,
+  totalSteps = 0,
+  step = -1,
   title,
   submitLabel,
   children,
   onClose,
   onPrevious,
   onNext,
-  canContinue=false,
+  canContinue = false,
 }) {
   return (
     <Transition show={open}>
-      <Dialog className="relative z-10" onClose={() => void 0/**(make it modal)*/}>
+      <Dialog className="relative z-10" onClose={() => void 0 /**(make it modal)*/}>
         <TransitionChild
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -49,12 +49,13 @@ export function WizardDialog({
                 </div>
                 <div>
                   <div className="-mt-2.5 text-center sm:text-left">
-                    <DialogTitle as="h3" className="mb-6 text-base font-semibold leading-6 text-gray-900">
+                    <DialogTitle
+                      as="h3"
+                      className="mb-6 text-base font-semibold leading-6 text-gray-900"
+                    >
                       {title}
                     </DialogTitle>
-                    <div className="mt-2">
-                      {children}
-                    </div>
+                    <div className="mt-2">{children}</div>
                   </div>
                 </div>
                 <div className="flex justify-between mt-5 gap-3 sm:mt-6">
@@ -63,10 +64,8 @@ export function WizardDialog({
                     className="inline-flex gap-2 min-w-32"
                     onClick={step >= 0 ? onPrevious : onClose}
                   >
-                    {step >= 0 && (
-                      <ChevronLeftIcon className="-ml-1 h-6 w-6" />
-                    )}
-                    <span>{ step >= 0 ? 'Previous' : 'Cancel' }</span>
+                    {step >= 0 && <ChevronLeftIcon className="-ml-1 h-6 w-6" />}
+                    <span>{step >= 0 ? 'Previous' : 'Cancel'}</span>
                   </Button>
                   <Button
                     variant="solid"
@@ -75,7 +74,7 @@ export function WizardDialog({
                     className="inline-flex gap-2 min-w-32"
                     onClick={onNext}
                   >
-                    <span>{ step === totalSteps - 1 ? (submitLabel || 'Submit') : 'Next' }</span>
+                    <span>{step === totalSteps - 1 ? submitLabel || 'Submit' : 'Next'}</span>
                     <ChevronRightIcon className="h-6 w-6" />
                   </Button>
                 </div>
@@ -85,5 +84,5 @@ export function WizardDialog({
         </div>
       </Dialog>
     </Transition>
-  )
+  );
 }

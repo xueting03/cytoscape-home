@@ -1,6 +1,6 @@
-import { Button } from '@/components/base/Button'
-import { Container } from '@/components/base/Container'
-import { CircleBackground } from '@/components/CircleBackground'
+import { Button } from '@/components/base/Button';
+import { Container } from '@/components/base/Container';
+import { CircleBackground } from '@/components/CircleBackground';
 
 export function CallToAction({ onGetStarted }) {
   return (
@@ -17,16 +17,22 @@ export function CallToAction({ onGetStarted }) {
             Get your first results
           </h2>
           <p className="mt-4 text-lg text-gray-300">
-            In just under a minute, we&apos;ll walk you through a few questions to find the perfect tool for your needs.
-            You don&apos;t even need to create an account or provide any personal information.
+            In just under a minute, we&apos;ll walk you through a few questions to find the perfect
+            tool for your needs. You don&apos;t even need to create an account or provide any
+            personal information.
           </p>
           <div className="mt-8 flex justify-center">
-            <Button variant="solid" color="primary" onClick={onGetStarted} className="min-w-44 text-gray-900">
+            <Button
+              variant="solid"
+              color="primary"
+              onClick={onGetStarted}
+              className="min-w-44 text-gray-900"
+            >
               <span className="text-center">Get Started</span>
             </Button>
           </div>
         </div>
       </Container>
     </section>
-  )
+  );
 }

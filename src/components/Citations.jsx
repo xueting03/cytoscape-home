@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react'
-import clsx from 'clsx'
-import { useInView } from 'framer-motion'
-import { Container } from '@/components/base/Container'
+import { useEffect, useMemo, useRef, useState } from 'react';
+import clsx from 'clsx';
+import { useInView } from 'framer-motion';
+import { Container } from '@/components/base/Container';
 
 const citations = [
   {
@@ -104,22 +104,20 @@ const citations = [
     doi: 'https://doi.org/10.3390%2Fmetabo11010029',
     image: 'metabo11010029.png',
   },
-]
+];
 
 function Citation({ title, body, author, doi, image, className, ...props }) {
   let animationDelay = useMemo(() => {
-    let possibleAnimationDelays = ['0s', '0.1s', '0.2s', '0.3s', '0.4s', '0.5s']
-    return possibleAnimationDelays[
-      Math.floor(Math.random() * possibleAnimationDelays.length)
-    ]
-  }, [])
+    let possibleAnimationDelays = ['0s', '0.1s', '0.2s', '0.3s', '0.4s', '0.5s'];
+    return possibleAnimationDelays[Math.floor(Math.random() * possibleAnimationDelays.length)];
+  }, []);
 
   return (
     <a href={doi} target="_blank" rel="noreferrer" className="p-2">
       <figure
         className={clsx(
           'group flex flex-row space-x-4 animate-fade-in rounded-3xl bg-white p-6 opacity-0 shadow-md shadow-gray-900/5 hover:shadow-xl',
-          className,
+          className
         )}
         style={{ animationDelay }}
         {...props}
@@ -130,9 +128,7 @@ function Citation({ title, body, author, doi, image, className, ...props }) {
         />
         <div>
           <blockquote className="text-gray-900">
-            <p className="mt-4 text-xs font-semibold leading-6">
-              {title}
-            </p>
+            <p className="mt-4 text-xs font-semibold leading-6">{title}</p>
             <p className="mt-3 text-sm leading-7">{body}</p>
           </blockquote>
           <figcaption className="mt-3 text-xs text-gray-600 before:content-['–_']">
@@ -141,41 +137,41 @@ function Citation({ title, body, author, doi, image, className, ...props }) {
         </div>
       </figure>
     </a>
-  )
+  );
 }
 
 function splitArray(array, numParts) {
-  let result = []
+  let result = [];
   for (let i = 0; i < array.length; i++) {
-    let index = i % numParts
+    let index = i % numParts;
     if (!result[index]) {
-      result[index] = []
+      result[index] = [];
     }
-    result[index].push(array[i])
+    result[index].push(array[i]);
   }
-  return result
+  return result;
 }
 
 function CitationColumn({ citations, className, citationClassName, msPerPixel = 0 }) {
-  let columnRef = useRef(null)
-  let [columnHeight, setColumnHeight] = useState(0)
-  let duration = `${columnHeight * msPerPixel}ms`
+  let columnRef = useRef(null);
+  let [columnHeight, setColumnHeight] = useState(0);
+  let duration = `${columnHeight * msPerPixel}ms`;
 
   useEffect(() => {
     if (!columnRef.current) {
-      return
+      return;
     }
 
     let resizeObserver = new window.ResizeObserver(() => {
-      setColumnHeight(columnRef.current?.offsetHeight ?? 0)
-    })
+      setColumnHeight(columnRef.current?.offsetHeight ?? 0);
+    });
 
-    resizeObserver.observe(columnRef.current)
+    resizeObserver.observe(columnRef.current);
 
     return () => {
-      resizeObserver.disconnect()
-    }
-  }, [])
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   return (
     <div
@@ -192,15 +188,15 @@ function CitationColumn({ citations, className, citationClassName, msPerPixel = 
         />
       ))}
     </div>
-  )
+  );
 }
 
 function CitationGrid() {
-  const containerRef = useRef(null)
-  const isInView = useInView(containerRef, { once: true, amount: 0.4 })
-  const columns = splitArray(citations, 2)
-  const column1 = columns[0]
-  const column2 = columns[1]
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.4 });
+  const columns = splitArray(citations, 2);
+  const column1 = columns[0];
+  const column2 = columns[1];
 
   return (
     <div
@@ -211,20 +207,18 @@ function CitationGrid() {
         <>
           <CitationColumn
             citations={[...column1, ...column2]}
-            citationClassName={(citationIndex) => clsx(citationIndex >= column1.length && 'md:hidden')}
+            citationClassName={citationIndex =>
+              clsx(citationIndex >= column1.length && 'md:hidden')
+            }
             msPerPixel={15}
           />
-          <CitationColumn
-            citations={column2}
-            className="hidden lg:block"
-            msPerPixel={10}
-          />
+          <CitationColumn citations={column2} className="hidden lg:block" msPerPixel={10} />
         </>
       )}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-gray-50" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-gray-50" />
     </div>
-  )
+  );
 }
 
 export function Citations() {
@@ -250,11 +244,11 @@ export function Citations() {
             className="underline"
           >
             researchers
-          </a>
-          {' '}have used Cytoscape tools and resources.
+          </a>{' '}
+          have used Cytoscape tools and resources.
         </p>
         <CitationGrid />
       </Container>
     </section>
-  )
+  );
 }

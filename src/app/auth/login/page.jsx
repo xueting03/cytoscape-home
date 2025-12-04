@@ -1,10 +1,10 @@
-import { AuthLayout } from '@/components/AuthLayout'
-import { Button } from '@/components/Button'
-import { TextField } from '@/components/base/Fields'
+import { AuthLayout } from '@/components/AuthLayout';
+import { Button } from '@/components/Button';
+import { TextField } from '@/components/base/Fields';
 
 export const metadata = {
   title: 'Sign In',
-}
+};
 
 export default function Login() {
   return (
@@ -42,5 +42,5 @@ export default function Login() {
         </Button>
       </form>
     </AuthLayout>
-  )
+  );
 }
