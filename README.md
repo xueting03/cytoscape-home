@@ -5,7 +5,7 @@
 [![React](https://img.shields.io/badge/React-18.2-61DAFB?logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?logo=vite)](https://vitejs.dev/)
 
-**Cytoscape Home** is the centralized web portal and landing page for the **Cytoscape Ecosystem**. It serves as an entry point for bench biologists and bioinformaticians to discover, access, and utilize powerful network biology tools including Cytoscape Desktop, Cytoscape Web, NDEx, and GeneMANIA.
+**Cytoscape Home** is the centralized web portal and landing page for the **Cytoscape**. It serves as an entry point for bench biologists and bioinformaticians to discover, access, and utilize powerful network biology tools including Cytoscape Desktop, Cytoscape Web, NDEx, and GeneMANIA.
 
 The application is designed to guide users from raw data (gene lists, enrichment files) to actionable network visualizations and analyses through interactive wizards and unified search capabilities.
 
@@ -59,3 +59,53 @@ Seamlessly connects the suite of Cytoscape tools:
 ├── .eslintrc.cjs        # ESLint configuration
 ├── tailwind.config.js   # Tailwind CSS configuration
 └── vite.config.js       # Vite configuration
+```
+
+## ⚡ Getting Started
+### Prerequisites
+Ensure you have Node.js (v16 or higher recommended) and npm installed on your machine.
+
+### Installation
+1. Clone the repository:
+
+<pre>git clone https://github.com/cytoscape/cytoscape-home.git cd cytoscape-home</pre>
+
+2. Install dependencies:
+
+<pre>npm install</pre>
+
+## Development
+To start the local development server with Hot Module Replacement (HMR):
+
+<pre>
+npm run dev
+# or
+npm run watch
+</pre>
+
+Open http://localhost:5173 to view the site in your browser.
+
+## 📦 Build & Deployment
+To build the application for production (optimizes and minifies the code into the dist/ folder):
+<pre>npm run build</pre>
+
+To preview the production build locally:
+<pre>npm run preview</pre>
+
+## ✅ Linting
+This project uses ESLint with React-specific plugins. To check for code quality issues:
+<pre>npm run lint</pre>
+
+## 📄 License
+### Copyright (c) 2023-2024, The Cytoscape Consortium.
+
+This project is licensed under the terms found in the LICENSE file. The software is provided "AS IS", without warranty of any kind.
+
+## 🔗 Related Links
+[Cytoscape.org](https://cytoscape.org/)
+
+[Cytoscape App Store](https://apps.cytoscape.org/)
+
+[Cytoscape Manual](https://manual.cytoscape.org/en/stable/)
+
+[NDEx Bio](https://www.ndexbio.org//#/)
