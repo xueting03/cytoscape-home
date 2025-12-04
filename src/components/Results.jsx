@@ -17,12 +17,6 @@ import { Header } from '@/components/Header'
 
 const BASE_TUTORIALS_URL = 'https://cytoscape.org/cytoscape-tutorials/protocols/enrichmentmap-pipeline/#'
 
-const resultTypes = {
-  gene: 'Gene Analysis',
-  pathway: 'Pathway Search',
-  tutorial: 'Tutorial Search',
-}
-
 const createCytoscape = (id) => {
   const container = document.getElementById(id)
   const cy = new Cytoscape({
@@ -402,7 +396,7 @@ const TutorialsCard = ({ terms, searchEngine }) => {
     )}
     {!loading && results && results.length > 0 && (
       <ul className="space-y-2">
-      {results.map(({ section, parent, title, text, terms }, idx) => (
+      {results.map(({ section, parent, text, terms }, idx) => (
         <li key={idx} className="p-2 max-w-screen-md">
           <span className="font-medium">
             <a
@@ -411,7 +405,6 @@ const TutorialsCard = ({ terms, searchEngine }) => {
               rel='noreferrer'
               className="hover:underline hover:underline-offset-2 text-complement-500"
             >
-              {title}
             </a>
           </span>
           <div className="text-sm text-gray-600">
@@ -432,7 +425,6 @@ export function Results({open=false, data, searchEngine, onClose }) {
   const [localData, setLocalData] = useState(data)
 
   const type = localData?.type
-  const title = resultTypes[type] || 'Results'
   const terms = localData?.terms || []
   const organism = localData?.organism
 

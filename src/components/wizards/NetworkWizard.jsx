@@ -18,7 +18,7 @@ function CyWebPanel() {
   )
 }
 
-export function NetworkWizard({ step, setTotalSteps, setTitle, setSubmitLabel, onCanContinue, onSubmit }) {
+export function NetworkWizard({ step, setTotalSteps, setTitle, onCanContinue, onSubmit }) {
   const genesRef = useRef([])
   const orgRef = useRef()
 

@@ -10,6 +10,7 @@ import { SearchEngine } from '@/app/shared/search.js'
 
 const queryClient = new QueryClient()
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 Cytoscape.use(fcose)
 
 const searchEngine = new SearchEngine()

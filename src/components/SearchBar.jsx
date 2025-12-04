@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import clsx from 'clsx'
 import { geneManiaOrganisms } from '@/app/shared/common'
 
@@ -10,6 +10,7 @@ import { CheckIcon } from '@heroicons/react/20/solid'
  * SearchBar component for entering gene symbols, pathways, or any other search terms.
  */
 export function SearchBar({
+  id,
   placeholder,
   initialText = '',
   initialOrganismTaxon = '9606', // Default to human
@@ -22,6 +23,10 @@ export function SearchBar({
   const [text, setText] = useState(initialText)
   const [selectedOrganism, setSelectedOrganism] = useState(geneManiaOrganisms.find(org => org.taxon === initialOrganismTaxon))
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [focusedIndex, setFocusedIndex] = useState(-1)
+  
+  const inputRef = useRef(null)
+  const dropdownRef = useRef(null)
   
   // Set the initial text when the component mounts
   useEffect(() => {
@@ -48,6 +53,7 @@ export function SearchBar({
       const dropdownMenu = document.getElementById('organismDropdownMenu')
       if (dropdownMenu && !dropdownMenu.contains(event.target)) {
         setDropdownOpen(false)
+        setFocusedIndex(-1)
       }
     }
     // Add event listener to document and any modal dialog
@@ -61,6 +67,13 @@ export function SearchBar({
     }
   }, [showOrganismSelector, dropdownOpen])
 
+  // Reset focused index when dropdown closes
+  useEffect(() => {
+    if (!dropdownOpen) {
+      setFocusedIndex(-1)
+    }
+  }, [dropdownOpen])
+
   const handleTextChange = (event) => {
     const newText = event.target.value
     setText(newText)
@@ -72,7 +85,10 @@ export function SearchBar({
     if (org) {
       setSelectedOrganism(org)
       setDropdownOpen(false)
+      setFocusedIndex(-1)
       onOrganismChange?.(org)
+      // Return focus to input
+      inputRef.current?.focus()
     }
   }
 
@@ -87,6 +103,60 @@ export function SearchBar({
     event.stopPropagation() // Prevent click from propagating to document
     setDropdownOpen((open) => !open)
   }
+
+  const handleDropdownKeyDown = (event) => {
+    if (!dropdownOpen) {
+      if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') {
+        event.preventDefault()
+        setDropdownOpen(true)
+        setFocusedIndex(geneManiaOrganisms.findIndex(org => org.taxon === selectedOrganism.taxon))
+      }
+      return
+    }
+
+    switch (event.key) {
+      case 'Escape':
+        event.preventDefault()
+        setDropdownOpen(false)
+        setFocusedIndex(-1)
+        break
+      case 'ArrowDown':
+        event.preventDefault()
+        setFocusedIndex((prev) => 
+          prev < geneManiaOrganisms.length - 1 ? prev + 1 : prev
+        )
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        setFocusedIndex((prev) => prev > 0 ? prev - 1 : prev)
+        break
+      case 'Home':
+        event.preventDefault()
+        setFocusedIndex(0)
+        break
+      case 'End':
+        event.preventDefault()
+        setFocusedIndex(geneManiaOrganisms.length - 1)
+        break
+      case 'Enter':
+      case ' ':
+        event.preventDefault()
+        if (focusedIndex >= 0) {
+          handleOrganismSelect(geneManiaOrganisms[focusedIndex].taxon)
+        }
+        break
+    }
+  }
+
+  // Scroll focused item into view
+  useEffect(() => {
+    if (focusedIndex >= 0 && dropdownRef.current) {
+      const focusedElement = dropdownRef.current.children[focusedIndex]
+      if (focusedElement) {
+        focusedElement.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+      }
+    }
+  }, [focusedIndex])
 
   const handleSubmit = (event) => {
     if (text?.trim() !== '') {
@@ -113,8 +183,13 @@ export function SearchBar({
         <div className="absolute top-1 left-1 flex items-center">
           <button
             id="searchDropdownButton"
+            type="button"
             onClick={handleDropdownClick}
-            className="z-10 min-w-16 border-r py-1 px-1.5 text-center flex items-center text-sm transition-all text-slate-600"
+            onKeyDown={handleDropdownKeyDown}
+            className="z-10 min-w-16 border-r py-1 px-1.5 text-center flex items-center text-sm transition-all text-slate-600 focus:outline-none focus:ring-2 focus:ring-complement-500 rounded-l"
+            aria-label={`Selected organism: ${selectedOrganism.name}. Press Enter to change.`}
+            aria-expanded={dropdownOpen}
+            aria-haspopup="listbox"
           >
             <span
               id="searchDropdownLabel"
@@ -122,26 +197,43 @@ export function SearchBar({
             >
               <img
                 src={selectedOrganism.image}
-                alt={selectedOrganism.name}
+                alt=""
                 className="inline-block h-6 w-6 mr-1 saturate-0"
               />
             </span>
             <span className="flex-grow"/>
-            <ChevronDownIcon className="h-5 w-5 ml-1" />
+            <ChevronDownIcon className="h-5 w-5 ml-1" aria-hidden="true" />
           </button>
         {dropdownOpen && (
           <div
             id="organismDropdownMenu"
+<<<<<<< Updated upstream
             className="z-10 min-w-[280px] absolute top-10 -left-1 w-full bg-white border border-slate-200 rounded-md shadow-lg scrollbar-hide"
             style={{ maxHeight: '130px', overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+=======
+            role="listbox"
+            aria-label="Select organism"
+            className="z-10 min-w-[280px] absolute top-10 -left-1 w-full bg-white border border-slate-200 rounded-md shadow-lg max-h-60 overflow-auto"
+>>>>>>> Stashed changes
           >
-            <ul id="searchDropdownOptions">
-            {geneManiaOrganisms.map((org) => (
+            <div className="p-2 text-xs text-gray-500 border-b">
+              <kbd>↑</kbd> <kbd>↓</kbd> Navigate • <kbd>Enter</kbd> Select • <kbd>Esc</kbd> Close
+            </div>
+            <ul id="searchDropdownOptions" ref={dropdownRef}>
+            {geneManiaOrganisms.map((org, index) => (
               <li
                 key={org.taxon}
+                role="option"
+                aria-selected={selectedOrganism.taxon === org.taxon}
                 data-value={org.taxon}
                 onClick={handleOrganismClick}
-                className="px-4 py-2 text-slate-600 hover:bg-complement-200 text-sm cursor-pointer"
+                className={clsx(
+                  'px-4 py-2 text-slate-600 text-sm cursor-pointer',
+                  {
+                    'bg-complement-200': focusedIndex === index,
+                    'hover:bg-complement-100': focusedIndex !== index,
+                  }
+                )}
               >
                 <div className="flex items-center">
                   <img src={org.image} alt="" className="h-6 w-6 flex-shrink-0 rounded-full saturate-0" />
@@ -167,17 +259,22 @@ export function SearchBar({
         </div>
       )}
         <form onSubmit={handleSubmit}>
+          <label htmlFor={id} className="sr-only">Search terms</label>
           <input
+            ref={inputRef}
+            id={id}
             type="text"
             value={text || ''}
             placeholder={placeholder || 'Enter your search term here...'}
             onChange={handleTextChange}
             className={inputClassName}
+            aria-describedby={showOrganismSelector ? 'searchDropdownButton' : undefined}
           />
           <button
             disabled={!text || text.trim() === ''}
             type="submit"
-            className="absolute inset-y-1 right-1 w-9 h-9 flex items-center justify-center rounded-2xl hover:bg-gray-100 active:bg-gray-200 fill-complement-500 disabled:pointer-events-none disabled:fill-gray-400"
+            className="absolute inset-y-1 right-1 w-9 h-9 flex items-center justify-center rounded-2xl hover:bg-gray-100 active:bg-gray-200 fill-complement-500 disabled:pointer-events-none disabled:fill-gray-400 focus:outline-none focus:ring-2 focus:ring-complement-500"
+            aria-label="Submit search"
           >
             <MagnifyingGlassIcon
               aria-hidden="true"

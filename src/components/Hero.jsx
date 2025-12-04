@@ -23,9 +23,22 @@ export function Hero({ onGetStarted, onSubmit }) {
   const handleTextChange = (text) => {
     setSearchText(text.trim())
   }
+
   const handleExampleClick = (event, example) => {
     const { terms, taxon, type } = example
     event.preventDefault()
+    animateSearch(terms, taxon, type)
+  }
+
+  const handleExampleKeyDown = (event, example) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      const { terms, taxon, type } = example
+      animateSearch(terms, taxon, type)
+    }
+  }
+
+  const animateSearch = (terms, taxon, type) => {
     // Simulate a search submission
     setSearchText('')
     const text = terms.join(' ')
@@ -45,6 +58,20 @@ export function Hero({ onGetStarted, onSubmit }) {
     animate()
   }
 
+  const handleScrollToGenes = () => {
+    const genesSection = document.getElementById('genes')
+    if (genesSection) {
+      genesSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  const handleScrollKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      handleScrollToGenes()
+    }
+  }
+
   return (
     <div className="overflow-hidden py-5 lg:pt-20 border-b border-gray-200">
       <Container>
@@ -58,10 +85,11 @@ export function Hero({ onGetStarted, onSubmit }) {
               Whether you are exploring genes, proteins or pathways, our intuitive interface allows you to analyze your data and create beautiful figures that are ready to be published.
             </p>
             <div className="mt-10 flex flex-col gap-y-0 sm:items-start xs:items-start">
-              <label className="mb-1 text-base/7 font-semibold text-gray-900">
+              <label htmlFor="hero-search" className="mb-1 text-base/7 font-semibold text-gray-900">
                 Try it now:
               </label>
               <SearchBar
+                id="hero-search"
                 placeholder="Enter one or more genes, a pathway or any terms"
                 initialText={searchText}
                 onTextChange={handleTextChange}
@@ -74,20 +102,26 @@ export function Hero({ onGetStarted, onSubmit }) {
                   <span key={index}>
                     <a
                       href="#"
-                      className="text-complement-500 hover:underline"
+                      role="button"
+                      tabIndex={0}
+                      className="text-complement-500 hover:underline focus:underline focus:outline-none focus:ring-2 focus:ring-complement-500 focus:ring-offset-2 rounded"
                       onClick={(e) => handleExampleClick(e, example)}
+                      onKeyDown={(e) => handleExampleKeyDown(e, example)}
+                      aria-label={`Search for ${example.label}`}
                     >
                       {example.label}
                     </a>
-                    {index < searchExamples.length - 1 && <span className="mx-2">|</span>}
+                    {index < searchExamples.length - 1 && <span className="mx-2" aria-hidden="true">|</span>}
                   </span>
                 ))}
               </div>
             </div>
             <div className="mt-16 text-center">
               <button
-                onClick={() => window.scrollTo({ top: document.getElementById('genes').offsetTop, behavior: 'smooth' })}
-                className="mx-auto flex flex-col items-center relative rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 transition-colors delay-150 hover:text-gray-900 hover:delay-0"
+                onClick={handleScrollToGenes}
+                onKeyDown={handleScrollKeyDown}
+                className="mx-auto flex flex-col items-center relative rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 transition-colors delay-150 hover:text-gray-900 hover:delay-0 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                aria-label="Scroll to genes section"
               >
                 What else can I do?
                 <ArrowDownCircleIcon  
