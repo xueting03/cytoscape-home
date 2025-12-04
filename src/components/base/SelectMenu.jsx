@@ -63,7 +63,7 @@ export function SelectMenu({ data, label, selectedIndex, onChange, className }) 
                 {data.map((item) => (
                   <ListboxOption
                     key={item.id}
-                    className={({ active }) =>
+                    className={({active}) =>
                       classNames(
                         active ? 'bg-complement-200' : '',
                         'relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900'
@@ -71,7 +71,7 @@ export function SelectMenu({ data, label, selectedIndex, onChange, className }) 
                     }
                     value={item}
                   >
-                    {({ selected, active }) => (
+                    {({ selected }) => (
                       <>
                         <div className="flex items-center">
                           <img src={item.image} alt="" className="h-6 w-6 flex-shrink-0 rounded-full saturate-0" />
