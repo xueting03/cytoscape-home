@@ -4,6 +4,7 @@ import { geneManiaOrganisms } from '@/app/shared/common'
 
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/16/solid'
 import { CheckIcon } from '@heroicons/react/20/solid'
+import DOMPurify from 'dompurify'
 
 
 /**
@@ -63,8 +64,9 @@ export function SearchBar({
 
   const handleTextChange = (event) => {
     const newText = event.target.value
-    setText(newText)
-    onTextChange?.(newText)
+    const sanitizedText = DOMPurify.sanitize(newText)
+    setText(sanitizedText)
+    onTextChange?.(sanitizedText)
   }
 
   const handleOrganismSelect = (value) => {
@@ -92,7 +94,8 @@ export function SearchBar({
     if (text?.trim() !== '') {
       event.preventDefault()
       event.stopPropagation()
-      onSubmit?.({ terms: text.trim().split(/\s+/).filter(term => term.length > 0), organism: selectedOrganism })
+      const sanitizedText = DOMPurify.sanitize(text)
+      onSubmit?.({ terms: sanitizedText.trim().split(/\s+/).filter(term => term.length > 0), organism: selectedOrganism })
     } else {
       event.preventDefault()
       event.stopPropagation()
