@@ -1,37 +1,22 @@
 import { CursorArrowRaysIcon, CpuChipIcon, CubeTransparentIcon } from '@heroicons/react/20/solid'
 import { Button } from '@/components/base/Button'
 import { HoverPopover } from './base/HoverPopover'
+import networkFeaturesData from '@/data/networkFeatures.json'
 
 const tagLine = 'Visualize and analyze with ease';
 const title = 'Start with a network';
 const description = `Take your network to the next level by easily performing relevant analyses.  Quickly edit and style your network to make it publication-ready.`;
 
-const features = [
-  {
-    name: 'Visualize a network',
-    description: 'Turn your network data into an editable visualization.  Drag and drop, zoom and pan, and style your network with ease.  Export to publication-quality PDFs.',
-    icon: CursorArrowRaysIcon,
-    tool: 'Cytoscape Web',
-    toolLink: 'https://web.cytoscape.org/',
-    tutorialLink: 'https://cytoscape-web.readthedocs.io/en/latest/Creating_Networks.html'
-  },
-  { 
-    name: 'Cluster a network', 
-    description: 'Run clustering analysis on your network to find modules.  Visualize the results with fitting layouts and styles.',
-    icon: CubeTransparentIcon,
-    tool: 'Cytoscape Web',
-    toolLink: 'https://web.cytoscape.org/',
-    tutorialLink: 'https://wikipedia.org'
-  },
-  {
-    name: 'Run toplogy analysis',
-    description: 'Run clustering analysis on your network to find sets of nodes with similar attributes.  Visualize the results with fitting layouts and styles.',
-    icon: CpuChipIcon,
-    tool: 'Cytoscape Web',
-    toolLink: 'https://web.cytoscape.org/',
-    tutorialLink: 'https://wikipedia.org'
-  }
-]
+const iconMap = {
+  CursorArrowRaysIcon,
+  CpuChipIcon,
+  CubeTransparentIcon
+}
+
+const features = networkFeaturesData.map(feature => ({
+  ...feature,
+  icon: iconMap[feature.icon]
+}))
 
 export function NetworkCTASection() {
   return (
