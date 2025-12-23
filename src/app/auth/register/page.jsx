@@ -1,10 +1,10 @@
-import { AuthLayout } from '@/components/AuthLayout'
-import { Button } from '@/components/Button'
-import { SelectField, TextField } from '@/components/base/Fields'
+import { AuthLayout } from '@/components/AuthLayout';
+import { Button } from '@/components/Button';
+import { SelectField, TextField } from '@/components/base/Fields';
 
 export const metadata = {
   title: 'Sign Up',
-}
+};
 
 export default function Register() {
   return (
@@ -68,5 +68,5 @@ export default function Register() {
         </Button>
       </form>
     </AuthLayout>
-  )
+  );
 }

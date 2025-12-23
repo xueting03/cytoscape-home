@@ -1,8 +1,8 @@
-import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
-import { Button } from '@/components/base/Button'
-import { GlobeAltIcon } from '@heroicons/react/24/outline'
-import { ComputerDesktopIcon } from '@heroicons/react/24/solid'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
+import { Button } from '@/components/base/Button';
+import { GlobeAltIcon } from '@heroicons/react/24/outline';
+import { ComputerDesktopIcon } from '@heroicons/react/24/solid';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 function LinkOptions() {
   return (
@@ -19,7 +19,8 @@ function LinkOptions() {
           Cytoscape Web
         </Button>
         <p className="mt-2 text-xs text-gray-600 text-center">
-          Instantly use the web-based version of Cytoscape directly in your browser.  Easily share and collaborate with your colleagues.
+          Instantly use the web-based version of Cytoscape directly in your browser. Easily share
+          and collaborate with your colleagues.
         </p>
       </div>
       <div>
@@ -34,20 +35,18 @@ function LinkOptions() {
           Cytoscape Desktop
         </Button>
         <p className="mt-2 text-xs text-gray-600 text-center">
-          Download and install the Cytoscape Desktop app for private, offline use on your computer.  Access advanced features and workflows.
+          Download and install the Cytoscape Desktop app for private, offline use on your computer.
+          Access advanced features and workflows.
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export function UseCytoscapeDialog({
-  open=false,
-  onClose
-}) {
+export function UseCytoscapeDialog({ open = false, onClose }) {
   return (
     <Transition show={open}>
-      <Dialog className="relative z-10" onClose={() => void 0/**(make it modal)*/}>
+      <Dialog className="relative z-10" onClose={() => void 0 /**(make it modal)*/}>
         <TransitionChild
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -80,7 +79,10 @@ export function UseCytoscapeDialog({
                 </div>
                 <div>
                   <div className="-mt-2.5 text-center sm:text-left">
-                    <DialogTitle as="h3" className="mb-6 text-base font-semibold leading-6 text-gray-900">
+                    <DialogTitle
+                      as="h3"
+                      className="mb-6 text-base font-semibold leading-6 text-gray-900"
+                    >
                       Which version of Cytoscape would you like to use?
                     </DialogTitle>
                     <div className="mt-2">
@@ -94,5 +96,5 @@ export function UseCytoscapeDialog({
         </div>
       </Dialog>
     </Transition>
-  )
+  );
 }

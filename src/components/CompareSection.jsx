@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon } from '@heroicons/react/20/solid';
 
 const tiers = [
   {
@@ -6,7 +6,8 @@ const tiers = [
     subtitle: 'Cytoscape Web in your browser, easy and shareable',
     id: 'tier-web',
     href: 'https://web.cytoscape.org/',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     features: [
       'Get started in seconds, no installation required',
       'Sharing and collaboration with colleagues',
@@ -21,17 +22,18 @@ const tiers = [
     subtitle: 'Cytoscape Desktop on your computer, private and powerful',
     id: 'tier-desktop',
     href: 'https://cytoscape.org/download.html',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     features: [
       'Install on your computer',
       'Private and offline',
       'Automate your workflow with Python',
       'Mac, Windows, and Linux supported',
-      'Publication-ready figure export'
+      'Publication-ready figure export',
     ],
-    cta: 'Download now'
+    cta: 'Download now',
   },
-]
+];
 
 export function CompareSection() {
   return (
@@ -46,17 +48,20 @@ export function CompareSection() {
           </p>
         </div>
         <p className="mx-auto mt-6 max-w-2xl text-lg font-medium text-pretty text-gray-600 sm:text-center sm:text-xl/8">
-          Choose the Cytoscape app that fits your needs, whether you're new to Cytoscape or an advanced bioinformatician.
+          Choose the Cytoscape app that fits your needs, whether you're new to Cytoscape or an
+          advanced bioinformatician.
         </p>
         <div className="mt-20 flow-root">
           <div className="isolate -mt-16 grid max-w-sm grid-cols-1 gap-y-16 divide-y divide-gray-100 sm:mx-auto lg:-mx-8 lg:mt-0 lg:max-w-none lg:grid-cols-2 lg:divide-x lg:divide-y-0 xl:-mx-4">
-            {tiers.map((tier) => (
+            {tiers.map(tier => (
               <div key={tier.id} className="pt-16 lg:px-8 lg:pt-0 xl:px-14">
                 {/* <h3 id={tier.id} className="text-base/7 font-semibold text-gray-900">
                   {tier.name}
                 </h3> */}
                 <p className="mt-6 flex items-baseline gap-x-1">
-                  <span className="text-5xl font-semibold tracking-tight text-gray-900">{tier.name}</span>
+                  <span className="text-5xl font-semibold tracking-tight text-gray-900">
+                    {tier.name}
+                  </span>
                 </p>
                 <p className="mt-3 text-sm/6 text-gray-500">{tier.subtitle}</p>
                 <a
@@ -69,9 +74,12 @@ export function CompareSection() {
                 </a>
                 {/* <p className="mt-10 text-sm/6 font-semibold text-gray-900">{tier.description}</p> */}
                 <ul role="list" className="mt-6 space-y-3 text-sm/6 text-gray-600">
-                  {tier.features.map((feature) => (
+                  {tier.features.map(feature => (
                     <li key={feature} className="flex gap-x-3">
-                      <CheckCircleIcon aria-hidden="true" className="h-6 w-5 flex-none text-primary-500" />
+                      <CheckCircleIcon
+                        aria-hidden="true"
+                        className="h-6 w-5 flex-none text-primary-500"
+                      />
                       {feature}
                     </li>
                   ))}
@@ -82,5 +90,5 @@ export function CompareSection() {
         </div>
       </div>
     </div>
-  )
+  );
 }

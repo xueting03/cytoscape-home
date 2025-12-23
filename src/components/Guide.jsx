@@ -1,17 +1,16 @@
-import { useEffect, useState, useRef } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { geneManiaOrganisms, parseGeneList } from '@/app/shared/common'
-import { createMyGeneInfoQueryOptions } from '@/app/shared/queryOptions'
-import { Radio, RadioGroup } from '@headlessui/react'
-import { WizardDialog } from '@/components/base/WizardDialog'
-import { GeneWizard } from '@/components/wizards/GeneWizard'
-import { EnrichmentWizard } from '@/components/wizards/EnrichmentWizard'
-import { NetworkWizard } from '@/components/wizards/NetworkWizard'
-import { TutorialWizard } from '@/components/wizards/TutorialWizard'
+import { useEffect, useState, useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { geneManiaOrganisms, parseGeneList } from '@/app/shared/common';
+import { createMyGeneInfoQueryOptions } from '@/app/shared/queryOptions';
+import { Radio, RadioGroup } from '@headlessui/react';
+import { WizardDialog } from '@/components/base/WizardDialog';
+import { GeneWizard } from '@/components/wizards/GeneWizard';
+import { EnrichmentWizard } from '@/components/wizards/EnrichmentWizard';
+import { NetworkWizard } from '@/components/wizards/NetworkWizard';
+import { TutorialWizard } from '@/components/wizards/TutorialWizard';
 
-
-const INITIAL_TITLE = 'What would you like to do?'
-const DEF_SUBMIT_LABEL = 'Submit'
+const INITIAL_TITLE = 'What would you like to do?';
+const DEF_SUBMIT_LABEL = 'Submit';
 
 const cards = [
   {
@@ -42,25 +41,24 @@ const cards = [
     submitLabel: 'Search',
     wizard: TutorialWizard,
   },
-]
+];
 
 const classNames = (...classes) => {
-  return classes.filter(Boolean).join(' ')
-}
-
+  return classes.filter(Boolean).join(' ');
+};
 
 const WizardSelector = ({ onChange }) => {
-  const [, setSelected] = useState()
+  const [, setSelected] = useState();
 
-  const handleChange = (card) => {
-    setSelected(card)
-    onChange(card)
-  }
+  const handleChange = card => {
+    setSelected(card);
+    onChange(card);
+  };
 
   return (
     <fieldset aria-label="Server size">
       <RadioGroup onChange={handleChange} className="space-y-4">
-        {cards.map((plan) => (
+        {cards.map(plan => (
           <Radio
             key={plan.name}
             value={plan}
@@ -94,111 +92,113 @@ const WizardSelector = ({ onChange }) => {
         ))}
       </RadioGroup>
     </fieldset>
-  )
-}
+  );
+};
 
-export function Guide({ open=false, type, initialText, onClose, onSubmit }) {
-  const [step, setStep] = useState(-1)
-  const [totalSteps, setTotalSteps] = useState(2)
-  const [title, setTitle] = useState(INITIAL_TITLE)
-  const [submitLabel, setSubmitLabel] = useState(DEF_SUBMIT_LABEL)
-  const [canContinue, setCanContinue] = useState(false)
-  const [searchText, setSearchText] = useState()
+export function Guide({ open = false, type, initialText, onClose, onSubmit }) {
+  const [step, setStep] = useState(-1);
+  const [totalSteps, setTotalSteps] = useState(2);
+  const [title, setTitle] = useState(INITIAL_TITLE);
+  const [submitLabel, setSubmitLabel] = useState(DEF_SUBMIT_LABEL);
+  const [canContinue, setCanContinue] = useState(false);
+  const [searchText, setSearchText] = useState();
 
-  const wizardRef = useRef()
+  const wizardRef = useRef();
 
-  const { data: taxidCounts } = useQuery(createMyGeneInfoQueryOptions(
+  const { data: taxidCounts } = useQuery(
+    createMyGeneInfoQueryOptions(
       parseGeneList(searchText || ''),
       open && type === 'gene' && step === -1 && searchText?.trim().length > 0
-  ))
+    )
+  );
 
   const reset = () => {
     // Go back to the first screen (the card selector)
-    setStep(-1)
-    setTotalSteps(2)
-    setTitle(INITIAL_TITLE)
-    setSubmitLabel(DEF_SUBMIT_LABEL)
-    setCanContinue(false)
-    setSearchText(undefined)
-    wizardRef.current = null
-  }
+    setStep(-1);
+    setTotalSteps(2);
+    setTitle(INITIAL_TITLE);
+    setSubmitLabel(DEF_SUBMIT_LABEL);
+    setCanContinue(false);
+    setSearchText(undefined);
+    wizardRef.current = null;
+  };
 
   useEffect(() => {
     if (open && searchText?.trim().length > 0 && taxidCounts) {
       if (taxidCounts.length === 0) {
-        console.debug('No organisms detected, rerouting to Pathway Search...')
-        reset()
+        console.debug('No organisms detected, rerouting to Pathway Search...');
+        reset();
         onSubmit({
           type: 'pathway',
-          terms: parseGeneList(searchText)
-        })
+          terms: parseGeneList(searchText),
+        });
       } else if (taxidCounts.length === 1 || taxidCounts[0].count > taxidCounts[1].count) {
         // If only one taxid is found or the first one has the highest count (assuming they are sorted by count),
         // the user doesn't need to select an organism
-        const taxid = taxidCounts[0].taxid
-        setSearchText(taxid)
+        const taxid = taxidCounts[0].taxid;
+        setSearchText(taxid);
         onSubmit({
           type: 'gene',
           terms: parseGeneList(searchText),
-          organism: geneManiaOrganisms.find(org => org.taxon === taxid)
-        })
+          organism: geneManiaOrganisms.find(org => org.taxon === taxid),
+        });
       }
     }
-  }, [open, searchText, taxidCounts, onSubmit])
+  }, [open, searchText, taxidCounts, onSubmit]);
 
   useEffect(() => {
     // Reset the wizard when the component mounts
     if (!open) {
-      reset()
-      return
+      reset();
+      return;
     }
-    wizardRef.current = cards.find(card => card.type === type)?.wizard || GeneWizard
-    setTotalSteps(2) // Default total steps
-    setTitle(INITIAL_TITLE) // Default title
-    setSubmitLabel(DEF_SUBMIT_LABEL) // Default submit label
-    setCanContinue(false) // Default canContinue state
+    wizardRef.current = cards.find(card => card.type === type)?.wizard || GeneWizard;
+    setTotalSteps(2); // Default total steps
+    setTitle(INITIAL_TITLE); // Default title
+    setSubmitLabel(DEF_SUBMIT_LABEL); // Default submit label
+    setCanContinue(false); // Default canContinue state
     if (initialText == null || initialText.trim().length === 0) {
-      setStep(-1) // Show the card selector
+      setStep(-1); // Show the card selector
     } else {
-      setStep(type === 'tutorial' || initialText.trim().length === 0 ? 0 : 1) // Show the second step if searchText is provided
-      setSearchText(initialText)
+      setStep(type === 'tutorial' || initialText.trim().length === 0 ? 0 : 1); // Show the second step if searchText is provided
+      setSearchText(initialText);
     }
     // setTitle(INITIAL_TITLE)
     // setSubmitLabel(DEF_SUBMIT_LABEL)
     // setCanContinue(hasText)
-  }, [open, type, initialText])
+  }, [open, type, initialText]);
 
   const handleClose = () => {
-    reset()
-    onClose()
-  }
-  const handleCanContinue = (b) => {
-    setCanContinue(b)
-  }
-  const handleSubmit = (data) => {
-    reset()
-    onSubmit(data)
-  }
+    reset();
+    onClose();
+  };
+  const handleCanContinue = b => {
+    setCanContinue(b);
+  };
+  const handleSubmit = data => {
+    reset();
+    onSubmit(data);
+  };
   const onPrevious = () => {
     if (step === 0) {
-      reset() // TODO keep previous selection
+      reset(); // TODO keep previous selection
     } else {
-      setStep(step - 1)
+      setStep(step - 1);
     }
-  }
+  };
   const onNext = () => {
-    setStep(step + 1)
-    setCanContinue(false)
-  }
-  const onWizardChange = (card) => {
+    setStep(step + 1);
+    setCanContinue(false);
+  };
+  const onWizardChange = card => {
     if (card) {
-      wizardRef.current = card.wizard
-      setSubmitLabel(card.submitLabel)
-      setCanContinue(true)
+      wizardRef.current = card.wizard;
+      setSubmitLabel(card.submitLabel);
+      setCanContinue(true);
     }
-  }
+  };
 
-  const Wizard = wizardRef.current
+  const Wizard = wizardRef.current;
 
   return (
     <WizardDialog
@@ -212,9 +212,9 @@ export function Guide({ open=false, type, initialText, onClose, onSubmit }) {
       onNext={onNext}
       canContinue={canContinue}
     >
-      {step < 0 ?
+      {step < 0 ? (
         <WizardSelector onChange={onWizardChange} />
-      :
+      ) : (
         <Wizard
           step={step}
           initialSearchText={searchText}
@@ -223,7 +223,7 @@ export function Guide({ open=false, type, initialText, onClose, onSubmit }) {
           onCanContinue={handleCanContinue}
           onSubmit={handleSubmit}
         />
-      }
+      )}
     </WizardDialog>
-  )
+  );
 }

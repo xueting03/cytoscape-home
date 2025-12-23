@@ -1,62 +1,80 @@
-import EventEmitter from 'eventemitter3'
-import MiniSearch from 'minisearch'
-
+import EventEmitter from 'eventemitter3';
+import MiniSearch from 'minisearch';
 
 /* Common stop words to ignore in search */
 const stopWords = new Set([
-  'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from',
-  'has', 'have', 'if', 'in', 'is', 'it', 'of', 'on', 'or', 'that',
-  'the', 'this', 'to', 'with'
-])
-
+  'a',
+  'an',
+  'and',
+  'are',
+  'as',
+  'at',
+  'be',
+  'by',
+  'for',
+  'from',
+  'has',
+  'have',
+  'if',
+  'in',
+  'is',
+  'it',
+  'of',
+  'on',
+  'or',
+  'that',
+  'the',
+  'this',
+  'to',
+  'with',
+]);
 
 export class SearchEngine {
-
   constructor(bus) {
-    console.log('Initializing SearchEngine...')
-    this.bus = bus || new EventEmitter()
-    this.searchReady = false
+    console.log('Initializing SearchEngine...');
+    this.bus = bus || new EventEmitter();
+    this.searchReady = false;
 
-    Promise.all([
-      this._indexTutorials(),
-      this._indexPathways(),
-    ]).then(() => {
-      this.searchReady = true
-      this.bus.emit('searchReady')
-    })
+    Promise.all([this._indexTutorials(), this._indexPathways()]).then(() => {
+      this.searchReady = true;
+      this.bus.emit('searchReady');
+    });
   }
 
   isSearchReady() {
-    return this.searchReady
+    return this.searchReady;
   }
 
   searchTutorials(query) {
     if (!this.isSearchReady()) {
-      throw "The tutorials haven't been fetched yet!"
+      throw "The tutorials haven't been fetched yet!";
     }
     if (query && query.length > 0) {
-      return this.tutorialsSearch.search(query, { fields: ['title', 'text'], prefix: true })
+      return this.tutorialsSearch.search(query, { fields: ['title', 'text'], prefix: true });
     }
-    return []
+    return [];
   }
 
   searchPathways(query) {
     if (!this.isSearchReady()) {
-      throw "The pathways haven't been fetched yet!"
+      throw "The pathways haven't been fetched yet!";
     }
     if (query && query.length > 0) {
-      return this.pathwaysSearch.search(query, { fields: ['title', 'description', 'keywords', 'annotations'], prefix: true })
+      return this.pathwaysSearch.search(query, {
+        fields: ['title', 'description', 'keywords', 'annotations'],
+        prefix: true,
+      });
     }
-    return []
+    return [];
   }
 
   async _indexTutorials() {
-    console.log('Indexing tutorials...')
+    console.log('Indexing tutorials...');
 
     const tutorials = await fetch('/tutorials/protocols/enrichmentmap-pipeline.json')
       .then(response => response.json())
       .then(data => {
-        console.log('Loaded tutorials:', data.length)
+        console.log('Loaded tutorials:', data.length);
         // Convert the data to the format expected by MiniSearch
         return data.map((item, index) => ({
           id: index,
@@ -64,15 +82,15 @@ export class SearchEngine {
           parent: item.parentId || null,
           title: item.title || '',
           text: item.text || '',
-        }))
+        }));
       })
       .catch(error => {
-        console.error('Error loading tutorials:', error)
-        return []
-      })
-    
+        console.error('Error loading tutorials:', error);
+        return [];
+      });
+
     if (!tutorials || tutorials.length === 0) {
-      return
+      return;
     }
 
     this.tutorialsSearch = new MiniSearch({
@@ -82,16 +100,16 @@ export class SearchEngine {
         boost: { title: 2, text: 1 },
         fuzzy: 0.0,
         prefix: true,
-        processTerm: (term) => stopWords.has(term.toLowerCase()) ? null : term.toLowerCase()
+        processTerm: term => (stopWords.has(term.toLowerCase()) ? null : term.toLowerCase()),
       },
-    })
+    });
 
-    this.tutorialsSearch.addAll(tutorials)
-    this.bus.emit('tutorialsIndexed')
+    this.tutorialsSearch.addAll(tutorials);
+    this.bus.emit('tutorialsIndexed');
   }
 
   async _indexPathways() {
-    console.log('Indexing pathways...')
+    console.log('Indexing pathways...');
 
     /*
       Example pathway data from the WikiPathways API:
@@ -110,9 +128,9 @@ export class SearchEngine {
     const pathways = await fetch('https://www.wikipathways.org/search.json')
       .then(response => response.json())
       .then(data => {
-        console.log('Loaded pathways:', data)
+        console.log('Loaded pathways:', data);
         // Convert the data to the format expected by MiniSearch
-        return data.map((item) => ({
+        return data.map(item => ({
           id: item.wpid,
           title: item.title || '',
           description: item.description || '',
@@ -120,15 +138,15 @@ export class SearchEngine {
           keywords: item.keywords ? item.keywords.split(',').map(k => k.trim()) : [],
           annotations: item.annotations ? item.annotations.split(',').map(a => a.trim()) : [],
           url: item.url || '',
-        }))
+        }));
       })
       .catch(error => {
-        console.error('Error loading pathways:', error)
-        return []
-      })
+        console.error('Error loading pathways:', error);
+        return [];
+      });
 
     if (!pathways || pathways.length === 0) {
-      return
+      return;
     }
 
     this.pathwaysSearch = new MiniSearch({
@@ -138,10 +156,10 @@ export class SearchEngine {
         boost: { title: 2, keywords: 2, annotations: 2 },
         fuzzy: 0.0,
         prefix: true,
-        processTerm: (term) => stopWords.has(term.toLowerCase()) ? null : term.toLowerCase()
+        processTerm: term => (stopWords.has(term.toLowerCase()) ? null : term.toLowerCase()),
       },
-    })
+    });
 
-    this.pathwaysSearch.addAll(pathways)
+    this.pathwaysSearch.addAll(pathways);
   }
 }
