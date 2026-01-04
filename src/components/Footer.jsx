@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { Button } from '@/components/base/Button'
-import { TextField } from '@/components/base/Fields'
 import { Container } from '@/components/base/Container'
 import { NavLinks } from '@/components/NavLinks'
 import { CytoscapeLogo } from '@/components/Logos'
@@ -10,19 +8,6 @@ import consortiumLogo from '@/images/logos/cytoscape-consortium.svg'
 import logoUCSD from '@/images/logos/ucsd.svg'
 import logoUCSF from '@/images/logos/ucsf.svg'
 import logoUofT from '@/images/logos/uoft.svg'
-
-
-function DownloadBorder(props) {
-  return (
-    <svg viewBox="0 0 96 96" fill="none" aria-hidden="true" {...props}>
-      <path
-        d="M1 17V9a8 8 0 0 1 8-8h8M95 17V9a8 8 0 0 0-8-8h-8M1 79v8a8 8 0 0 0 8 8h8M95 79v8a8 8 0 0 1-8 8h-8"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
 
 export function Footer() {
   const [openUseCy, setOpenUseCy] = useState(false)
@@ -57,7 +42,12 @@ export function Footer() {
           </div>
           <div className="group relative -mx-4 flex items-center self-stretch p-4 transition-colors hover:bg-gray-100 sm:self-auto sm:rounded-2xl lg:mx-0 lg:self-auto lg:p-6">
             <div className="relative flex h-24 w-24 flex-none items-center justify-center">
-              <DownloadBorder className="absolute inset-0 h-full w-full stroke-gray-300 transition-colors" />
+              <img 
+                src="/images/svg/download-border.svg" 
+                alt="" 
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full stroke-gray-300 transition-colors" 
+              />
               <CytoscapeLogo className="h-20" />
             </div>
             <div className="ml-8 lg:w-64">
