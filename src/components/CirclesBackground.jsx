@@ -1,16 +1,11 @@
-export function CirclesBackground(props) {
+export function CirclesBackground({ className = '', ...props }) {
   return (
-    <svg
-      viewBox="0 0 1090 1090"
+    <img 
+      src="/images/svg/circles-background.svg"
+      alt=""
       aria-hidden="true"
-      fill="none"
-      preserveAspectRatio="none"
+      className={className}
       {...props}
-    >
-      <circle cx={545} cy={545} r="544.5" />
-      <circle cx={545} cy={545} r="480.5" />
-      <circle cx={545} cy={545} r="416.5" />
-      <circle cx={545} cy={545} r="352.5" />
-    </svg>
+    />
   )
 }
