@@ -11,12 +11,6 @@ import { NDExCard } from '@/components/results/NDExCard'
 import { WikiPathwaysCard } from '@/components/results/WikiPathwaysCard'
 import { TutorialsCard } from '@/components/results/TutorialsCard'
 
-const resultTypes = {
-  gene: 'Gene Analysis',
-  pathway: 'Pathway Search',
-  tutorial: 'Tutorial Search',
-}
-
 export function Results({ open = false, data, searchEngine, onClose }) {
   const [localData, setLocalData] = useState(data)
 

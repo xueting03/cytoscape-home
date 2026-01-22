@@ -18,7 +18,7 @@ function EMPanel() {
   )
 }
 
-export function EnrichmentWizard({ step, setTotalSteps, setTitle, setSubmitLabel, onCanContinue, onSubmit }) {
+export function EnrichmentWizard({ step, setTotalSteps, setTitle, onCanContinue, onSubmit }) {
   const genesRef = useRef([])
   const orgRef = useRef()
 

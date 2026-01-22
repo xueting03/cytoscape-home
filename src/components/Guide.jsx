@@ -50,22 +50,35 @@ const classNames = (...classes) => {
 
 
 const WizardSelector = ({ onChange }) => {
-  const [, setSelected] = useState()
+  const [selected, setSelected] = useState()
 
   const handleChange = (card) => {
     setSelected(card)
     onChange(card)
   }
 
+  // Add keyboard hints
+  const handleKeyDown = (e) => {
+    // Arrow keys are already handled by RadioGroup
+    // This is just for additional hints
+    if (e.key === 'Enter' && selected) {
+      onChange(selected)
+    }
+  }
+
   return (
-    <fieldset aria-label="Server size">
-      <RadioGroup onChange={handleChange} className="space-y-4">
+    <fieldset aria-label="Select analysis type">
+      <legend className="sr-only">Choose what you would like to do</legend>
+      <div className="mb-4 text-sm text-gray-500 text-center">
+        Use <kbd>↑</kbd> <kbd>↓</kbd> arrow keys to navigate options
+      </div>
+      <RadioGroup value={selected} onChange={handleChange} className="space-y-4" onKeyDown={handleKeyDown}>
         {cards.map((plan) => (
           <Radio
             key={plan.name}
             value={plan}
             aria-label={plan.name}
-            aria-description={`${plan.ram}, ${plan.cpus}, ${plan.disk}, ${plan.price} per month`}
+            aria-description={plan.description}
             className={({ focus }) =>
               classNames(
                 focus ? 'border-complement-600 ring-2 ring-complement-600' : '',
@@ -163,9 +176,6 @@ export function Guide({ open=false, type, initialText, onClose, onSubmit }) {
       setStep(type === 'tutorial' || initialText.trim().length === 0 ? 0 : 1) // Show the second step if searchText is provided
       setSearchText(initialText)
     }
-    // setTitle(INITIAL_TITLE)
-    // setSubmitLabel(DEF_SUBMIT_LABEL)
-    // setCanContinue(hasText)
   }, [open, type, initialText])
 
   const handleClose = () => {
