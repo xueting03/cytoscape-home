@@ -15,7 +15,6 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
-<<<<<<< Updated upstream
 /* Hide scrollbar for Chrome, Safari and Opera */
 *::-webkit-scrollbar {
   display: none;
@@ -25,7 +24,6 @@
 * {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-=======
 @layer base {
   /* Keyboard focus indicators */
   *:focus-visible {
@@ -43,7 +41,6 @@
   }
 }
 
-/* Screen reader only utility */
 @layer utilities {
   .sr-only {
     position: absolute;
@@ -67,5 +64,4 @@
     clip: auto;
     white-space: normal;
   }
->>>>>>> Stashed changes
-}
+}}

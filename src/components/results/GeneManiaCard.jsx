@@ -1,4 +1,3 @@
-import { useRef, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { GeneManiaLogo } from '@/components/Logos'
 import { LoadingMessage } from '@/components/base/Loading'
@@ -8,18 +7,10 @@ import { createGeneManiaQueryOptions } from '@/app/shared/queryOptions'
 import { useGeneManiaCytoscape } from '@/hook/useGeneManiaCytoscape'
 
 export function GeneManiaCard({ genes, organism }) {
-  const isMounted = useRef(false)
-
-  // Ensure we track mounting to avoid queries on unmounted components
-  useEffect(() => {
-    isMounted.current = true
-    return () => { isMounted.current = false }
-  }, [])
-
   const { data, error, isFetching } = useQuery(createGeneManiaQueryOptions(
     genes,
     organism?.id,
-    isMounted.current && genes?.length > 0 && organism?.id > 0
+    genes?.length > 0 && organism?.id > 0
   ))
 
   // Use our new custom hook for the graph logic

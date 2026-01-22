@@ -207,14 +207,11 @@ export function SearchBar({
         {dropdownOpen && (
           <div
             id="organismDropdownMenu"
-<<<<<<< Updated upstream
-            className="z-10 min-w-[280px] absolute top-10 -left-1 w-full bg-white border border-slate-200 rounded-md shadow-lg scrollbar-hide"
+            // className="z-10 min-w-[280px] absolute top-10 -left-1 w-full bg-white border border-slate-200 rounded-md shadow-lg scrollbar-hide"
             style={{ maxHeight: '130px', overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-=======
             role="listbox"
             aria-label="Select organism"
             className="z-10 min-w-[280px] absolute top-10 -left-1 w-full bg-white border border-slate-200 rounded-md shadow-lg max-h-60 overflow-auto"
->>>>>>> Stashed changes
           >
             <div className="p-2 text-xs text-gray-500 border-b">
               <kbd>↑</kbd> <kbd>↓</kbd> Navigate • <kbd>Enter</kbd> Select • <kbd>Esc</kbd> Close
